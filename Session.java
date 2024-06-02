@@ -10,7 +10,7 @@ public class Session {
     public static final int MUSIC_INDEX = 3;
     
     private int curDeaths = 0; 
-    private boolean gameStat = true; // true if running, false if paused 
+    private StatusOptions gameStat = StatusOptions.PAUSED; // true if running, false if paused 
     private Level curLevel;
     
     private Space s;
@@ -19,11 +19,11 @@ public class Session {
         s = wrld;
     }
     
-    public void toggleGameStat() {
-        gameStat = !gameStat;
+    public void setGameStat(StatusOptions option) {
+        gameStat = option;
     }
     
-    public boolean getGameStat() {
+    public StatusOptions getGameStat() {
         return gameStat;
     }
     

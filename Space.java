@@ -61,6 +61,9 @@ public class Space extends World
         addObject(livesCounter, 60, 80);
         setLivesCounter(Session.ASTEROID_LAUNCHER_TIMES);
         
+        pause = new Pause();
+        addObject(pause, getWidth() - 35, 35);
+        
         Explosion.initializeImages();
         ProtonWave.initializeImages();
         

@@ -15,7 +15,8 @@ public class ActiveActor extends Actor
     
     public void act()
     {
-        if (!((Space)getWorld()).getSession().getGameStat()) return;
+        if (((Space)getWorld()).getSession().getGameStat() == StatusOptions.PAUSED ||
+        ((Space)getWorld()).getSession().getGameStat() == StatusOptions.GAMEOVER) return;
         action();
     }
     

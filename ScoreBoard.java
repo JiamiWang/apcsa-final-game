@@ -1,7 +1,6 @@
 import greenfoot.*;
 
 
-
 /**
  * The ScoreBoard is used to display results on the screen. It can display some
  * text and a score.
