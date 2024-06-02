@@ -49,19 +49,17 @@ public class ScoreBoard extends Actor
         image.fillRect(5, 5, WIDTH-10, HEIGHT-10);
         Font font = image.getFont();
         font = font.deriveFont(FONT_SIZE);
+        image.setFont(font);
+
         image.setColor(Color.WHITE);
         image.drawString(title, 60, 100);
         
         if (score == -1) {
             font.deriveFont(REG_TEXT_FONT_SIZE);
             image.setFont(font);
-            image.drawString (prefix, 60, 100);
+            image.drawString(prefix, 60, 100);
         }
-        else {
-            font.deriveFont(FONT_SIZE);
-            image.setFont(font);
-            image.drawString(prefix + score, 60, 200);
-        }
+        else image.drawString(prefix + score, 60, 200);
         setImage(image);
     }
 }

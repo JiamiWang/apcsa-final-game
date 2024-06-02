@@ -61,12 +61,12 @@ public abstract class SmoothMover extends Actor
                 exactY = 0;
             }
             if (exactY < 0) {
-                ((Space)getWorld()).addAsteroids(1);
                 destroy = true;
                 return;
             }
             if (exactX < 0 || exactX >= getWorld().getWidth()) {
-                exactX = getWorld().getWidth() / 2; exactY = 0;
+                exactX = (int) (Math.random() * (getWorld().getWidth()/1.5)) + 20;
+                exactY = 0;
             }
         } else {        
             if (exactX >= getWorld().getWidth()) {

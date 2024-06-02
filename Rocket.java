@@ -77,7 +77,9 @@ public class Rocket extends SmoothMover
             
             if (getWorld().getObjects(Asteroid.class).size() == 0 &&
                 getWorld().getObjects(ScoreBoard.class).size() == 0)
-                ((Space) getWorld()).gameOver();
+                {
+                    ((Space) getWorld()).gameOver();
+                }
         }        
     }
     

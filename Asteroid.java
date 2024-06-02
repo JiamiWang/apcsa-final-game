@@ -1,4 +1,5 @@
 import greenfoot.*;
+import java.util.concurrent.locks.*;
 
 /**
  * A rock in space.
@@ -10,6 +11,8 @@ public class Asteroid extends SmoothMover
 {
     public static final int DEFAULT_LARGE_SIZE = 50;
     public static final int DEFAULT_NEXT_SIZE_FACTOR = 2;
+    
+    private static Lock lock = new ReentrantLock();
     
     /** Size of this asteroid */
     private int size;
@@ -41,7 +44,7 @@ public class Asteroid extends SmoothMover
      */
     public Asteroid(int size, Vector velocity)
     {
-        super(velocity);
+        super(velocity, true);
         setSize(size);
     }
     
@@ -49,7 +52,10 @@ public class Asteroid extends SmoothMover
     {         
         move();
         checkRocketHit();
-        if (forDestroy()) getWorld().removeObject(this);
+        if (forDestroy()) {
+            ((Space)getWorld()).addAsteroids(1, size);
+            getWorld().removeObject(this);
+        }
     }
     
     /**
@@ -57,13 +63,22 @@ public class Asteroid extends SmoothMover
      */
     private void checkRocketHit()
     {
+        if (!lock.tryLock()) return;
         Rocket rkt = (Rocket) getOneIntersectingObject(Rocket.class);
         if (rkt != null)
         {
+            Session.addDeath();
             getWorld().addObject(new Explosion(), getX(), getY());
-            getWorld().removeObject(rkt);
-            ((Space)getWorld()).gameOver();
-            Greenfoot.playSound("overforyou.wav");
+
+            if (Session.ASTEROID_LAUNCHER_TIMES - Session.getDeaths() == 0) {
+                ((Space) getWorld()).gameOver();
+                Greenfoot.playSound("overforyou.wav");
+                getWorld().removeObject(rkt);
+                lock.unlock();
+            }
+            else {
+                ((Space)getWorld()).cleanUpAndCreateGame(lock);
+            }
         }
     }
 

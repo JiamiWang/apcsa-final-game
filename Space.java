@@ -1,4 +1,5 @@
 import greenfoot.*;
+import java.util.concurrent.locks.*;
 
 /**
  * Space. Something for rockets to fly in.
@@ -8,15 +9,10 @@ import greenfoot.*;
  */
 public class Space extends World
 {
-    private Counter scoreCounter, levelCounter;
+    private Counter scoreCounter, levelCounter, livesCounter;
     private OptionCounters musicOption;
     
-    private int startAsteroids = 5;
-    private int asteroidLauncher = 2;
-    private boolean gameStat = true;
-    
-    public void toggleGameStat() { gameStat = !gameStat; }
-    public boolean getGameStat() { return gameStat; }
+    private final int startAsteroids = 2;
     
     public void addScore(int score) {
         scoreCounter.add(score);
@@ -24,26 +20,36 @@ public class Space extends World
     
     public int getScore() { return scoreCounter.getValue(); }
     
+    public void setLivesCounter(int newVal) { livesCounter.setValue(newVal); }
+    
     /**
      * Create the space and all objects within it.
      */
     public Space()
     {
         super(400, 600, 1);
+        
+        Session.setWorld(this);
+        Session.defaultSessionVals();
+        
         GreenfootImage background = getBackground();
         background.setColor(Color.BLACK);
         background.fill();
         drawStars(background, 2282, 1, 3);
         
         musicOption = new MusicOption(new GreenfootSound("soundtrack.mp3"));
-        addObject(musicOption, 70, 80);
+        addObject(musicOption, 70, 110);
         
         levelCounter = new Counter("✨ ");//
         addObject(levelCounter, 60, 50);
         
         scoreCounter = new Counter("🎯 ");//⭐
         addObject(scoreCounter, 60, 20);
-
+        
+        livesCounter = new Counter("❤ ");//⭐
+        addObject(livesCounter, 60, 80);
+        setLivesCounter(Session.ASTEROID_LAUNCHER_TIMES);
+        
         Explosion.initializeImages();
         ProtonWave.initializeImages();
         
@@ -59,8 +65,17 @@ public class Space extends World
     }
     
     public void cleanUpGame() {
-        getObjects(Asteroid.class).clear();
-        getObjects(Rocket.class).clear();
+        removeObjects(getObjects(Asteroid.class));
+        removeObjects(getObjects(Rocket.class));
+    }
+    
+    public void cleanUpAndCreateGame(Lock l) {
+        cleanUpGame(); createGame();
+        l.unlock();
+    }
+    
+    public void cleanUpAndCreateGame() {
+        cleanUpGame(); createGame();
     }
     
     private void drawStars(GreenfootImage img, 
@@ -90,6 +105,20 @@ public class Space extends World
             int x = Greenfoot.getRandomNumber(getWidth());
             int y = Greenfoot.getRandomNumber(getHeight()/3);
             addObject(new Asteroid(), x, y);
+        }
+    }
+    
+    
+    /**
+     * Add a given number of asteroids to our world. 
+     */
+    public void addAsteroids(int count, int size) 
+    {
+        for(int i = 0; i < count; i++) 
+        {
+            int x = Greenfoot.getRandomNumber(getWidth());
+            int y = Greenfoot.getRandomNumber(getHeight()/3);
+            addObject(new Asteroid(size), x, y);
         }
     }
     
