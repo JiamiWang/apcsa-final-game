@@ -1,43 +1,73 @@
 import greenfoot.*;
+import java.util.concurrent.locks.*;
 
-/**
- * Provide important information regarding the 
- * current gaming session, such as economy
- * status, store powerups, etc
- * 
- * Everything is purposefully static. :p
- * 
- * @author JiamiWang
- * @version revision 1
- */
-public class Session  
-{
+public class Session {
     public static final int ASTEROID_LAUNCHER_TIMES = 3;
+    public static final int startAsteroids = 2;
     
-    private static int curDeaths = 0;
-    private static boolean gameStat = false;
+    public static final int LIVES_INDEX = 1;
+    public static final int LVL_INDEX = 2;
+    public static final int MUSIC_INDEX = 3;
     
-    private static World sessionWorld;
+    private int curDeaths = 0; 
+    private boolean gameStat = true; // true if running, false if paused 
+    private Level curLevel;
     
-    public static void defaultSessionVals() {
-        gameStat = false;
-        curDeaths = 0;
+    private Space s;
+    
+    public Session(Space wrld) {
+        s = wrld;
     }
     
-    protected static void setWorld(World wrld) { sessionWorld = wrld; }
+    public void toggleGameStat() {
+        gameStat = !gameStat;
+    }
     
-    public static void toggleGameStat() { gameStat = !gameStat; }
-    public static boolean getGameStat() { return gameStat; }
+    public boolean getGameStat() {
+        return gameStat;
+    }
     
-    public static int getDeaths() { return curDeaths; }
-    public static void addDeath() { 
+    public int getDeaths() {
+        return curDeaths;
+    }
+    
+    public void addDeath() { 
         curDeaths++;
-        ((Space)sessionWorld).setLivesCounter(ASTEROID_LAUNCHER_TIMES - curDeaths);
-    }
-    public static void setDeaths(int newDeath) { 
-        curDeaths = newDeath;
-        ((Space)sessionWorld).setLivesCounter(ASTEROID_LAUNCHER_TIMES - curDeaths);
+        s.setLivesCounter(ASTEROID_LAUNCHER_TIMES - curDeaths);
     }
     
-    private Session() {}
+    public void setDeaths(int newDeath) { 
+        curDeaths = newDeath;
+        s.setLivesCounter(ASTEROID_LAUNCHER_TIMES - curDeaths);
+    }
+    
+    public void createGame() {
+        Rocket rocket = new Rocket();
+        s.addObject(rocket, s.getWidth()/2, s.getHeight() - 45);
+        
+        s.addAsteroids(startAsteroids);
+        s.setPaintOrder(Labels.class);
+    }
+    
+    public void cleanUpGame() {
+        s.removeObjects(s.getObjects(Asteroid.class));
+        s.removeObjects(s.getObjects(Rocket.class));
+    }
+    
+    public void cleanUpAndCreateGame(Lock l) {
+        cleanUpGame(); createGame();
+        l.unlock();
+    }
+    
+    public void cleanUpAndCreateGame() {
+        cleanUpGame(); createGame();
+    }
+        
+    public void gameOver() {
+        s.addObject(
+            new ScoreBoard(s.getScore()),
+            s.getWidth() / 2,
+            s.getHeight() / 2
+        );
+    }
 }

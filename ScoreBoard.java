@@ -53,13 +53,11 @@ public class ScoreBoard extends Actor
 
         image.setColor(Color.WHITE);
         image.drawString(title, 60, 100);
-        
-        if (score == -1) {
-            font.deriveFont(REG_TEXT_FONT_SIZE);
-            image.setFont(font);
-            image.drawString(prefix, 60, 100);
-        }
-        else image.drawString(prefix + score, 60, 200);
+        image.drawString(prefix + score, 60, 200);
+        Font font_reg = image.getFont();
+        font_reg = font_reg.deriveFont(REG_TEXT_FONT_SIZE);
+        image.setFont(font_reg);
+        image.drawString("Press 'ESC' to restart with a new session.", 60, 250);
         setImage(image);
     }
 }

@@ -48,13 +48,14 @@ public class Asteroid extends SmoothMover
         setSize(size);
     }
     
-    public void act()
-    {         
+    public void action()
+    {
         move();
         checkRocketHit();
-        if (forDestroy()) {
+        if (forDestroy()) { // if destr
             ((Space)getWorld()).addAsteroids(1, size);
-            getWorld().removeObject(this);
+            World wrld = getWorld();
+            if (wrld != null) wrld.removeObject(this); // don't remove if already been done
         }
     }
     
@@ -67,17 +68,20 @@ public class Asteroid extends SmoothMover
         Rocket rkt = (Rocket) getOneIntersectingObject(Rocket.class);
         if (rkt != null)
         {
-            Session.addDeath();
+            Session sess = ((Space) getWorld()).getSession();
+            // make the syntax shorter
+            
+            sess.addDeath();
             getWorld().addObject(new Explosion(), getX(), getY());
-
-            if (Session.ASTEROID_LAUNCHER_TIMES - Session.getDeaths() == 0) {
-                ((Space) getWorld()).gameOver();
+    
+            if (Session.ASTEROID_LAUNCHER_TIMES - sess.getDeaths() == 0) {
+                sess.gameOver();
                 Greenfoot.playSound("overforyou.wav");
                 getWorld().removeObject(rkt);
                 lock.unlock();
             }
             else {
-                ((Space)getWorld()).cleanUpAndCreateGame(lock);
+                sess.cleanUpAndCreateGame(lock);
             }
         }
     }

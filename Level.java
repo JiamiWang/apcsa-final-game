@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.locks.*;
 
 /**
  * Write a description of class Level here.
@@ -20,13 +21,12 @@ public class Level {
      * @deprecated
      * Use getLevel instead to fetch a Level object pertaining to a level 
      */
-    @Deprecated(forRemoval = false)
-    private Level() { }
+    //@Deprecated(forRemoval = false)
+    public Level() { }
     
     /**
      * Constructor for levels as private use
      */
-    @Deprecated()
     private Level(int smalls, int mediums, int larges) {
         this.smalls = smalls; this.mediums = mediums; this.larges = larges;
         

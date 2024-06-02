@@ -13,7 +13,7 @@ import greenfoot.*;
  * d
  * @version 2.3
  */
-public abstract class SmoothMover extends Actor
+public abstract class SmoothMover extends ActiveActor
 {
     private Vector velocity;
     
@@ -61,7 +61,7 @@ public abstract class SmoothMover extends Actor
                 exactY = 0;
             }
             if (exactY < 0) {
-                destroy = true;
+                queueDestroyThis();
                 return;
             }
             if (exactX < 0 || exactX >= getWorld().getWidth()) {

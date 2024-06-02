@@ -31,7 +31,7 @@ public class Rocket extends SmoothMover
      * Do what a rocket's gotta do. (Which is: mostly flying about, and turning,
      * accelerating and shooting when the right keys are pressed.)
      */
-    public void act()
+    public void action()
     {
         checkKeys();
         move();
@@ -78,9 +78,9 @@ public class Rocket extends SmoothMover
             if (getWorld().getObjects(Asteroid.class).size() == 0 &&
                 getWorld().getObjects(ScoreBoard.class).size() == 0)
                 {
-                    ((Space) getWorld()).gameOver();
+                    ((Space)getWorld()).getSession().gameOver();
                 }
-        }        
+        }
     }
     
     /**

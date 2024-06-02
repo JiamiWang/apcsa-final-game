@@ -7,7 +7,7 @@ import greenfoot.*;
  * @author Poul Henriksen
  * @version 1.0.1
  */
-public class Explosion extends Actor
+public class Explosion extends ActiveActor
 {
     /** How many images should be used in the animation of the explostion */
     private final static int IMAGE_COUNT= 12;
@@ -55,7 +55,7 @@ public class Explosion extends Actor
     /**
      * Explode!
      */
-    public void act()
+    public void action()
     { 
         setImage(images[imageNo]);
 

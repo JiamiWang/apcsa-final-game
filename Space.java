@@ -10,17 +10,28 @@ import java.util.concurrent.locks.*;
 public class Space extends World
 {
     private Counter scoreCounter, levelCounter, livesCounter;
+    private Pause pause;
     private OptionCounters musicOption;
-    
-    private final int startAsteroids = 2;
-    
+    private Session sess;
+        
+    /* Interaction with the Score Counter */
     public void addScore(int score) {
         scoreCounter.add(score);
     }
     
+    public void setScore(int score) {
+        scoreCounter.setValue(score);
+    }
+    
     public int getScore() { return scoreCounter.getValue(); }
     
+    /* Interaction with the lives counter */
     public void setLivesCounter(int newVal) { livesCounter.setValue(newVal); }
+    
+    /* Game Session getter */
+    public Session getSession() {
+        return sess;
+    }
     
     /**
      * Create the space and all objects within it.
@@ -29,8 +40,8 @@ public class Space extends World
     {
         super(400, 600, 1);
         
-        Session.setWorld(this);
-        Session.defaultSessionVals();
+        sess = new Session(this); 
+        // above will handle all user and game related stuff
         
         GreenfootImage background = getBackground();
         background.setColor(Color.BLACK);
@@ -53,29 +64,7 @@ public class Space extends World
         Explosion.initializeImages();
         ProtonWave.initializeImages();
         
-        createGame();
-    }
-    
-    public void createGame() {
-        Rocket rocket = new Rocket();
-        addObject(rocket, getWidth()/2, getHeight() - 45);
-        
-        addAsteroids(startAsteroids);
-        setPaintOrder(Labels.class);
-    }
-    
-    public void cleanUpGame() {
-        removeObjects(getObjects(Asteroid.class));
-        removeObjects(getObjects(Rocket.class));
-    }
-    
-    public void cleanUpAndCreateGame(Lock l) {
-        cleanUpGame(); createGame();
-        l.unlock();
-    }
-    
-    public void cleanUpAndCreateGame() {
-        cleanUpGame(); createGame();
+        sess.createGame();
     }
     
     private void drawStars(GreenfootImage img, 
@@ -108,9 +97,8 @@ public class Space extends World
         }
     }
     
-    
     /**
-     * Add a given number of asteroids to our world. 
+     * Add a given number of asteroids with a specified size to our world. 
      */
     public void addAsteroids(int count, int size) 
     {
@@ -121,17 +109,4 @@ public class Space extends World
             addObject(new Asteroid(size), x, y);
         }
     }
-    
-    /**
-     * This method is called when the game is over to display the final score.
-     */
-    public void gameOver() 
-    {
-        addObject(
-            new ScoreBoard(getScore()),
-            getWidth() / 2,
-            getHeight() / 2
-        );
-    }
-
 }

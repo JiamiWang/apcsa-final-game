@@ -35,7 +35,7 @@ public class Bullet extends SmoothMover
     /**
      * The bullet will damage asteroids if it hits them.
      */
-    public void act()
+    public void action()
     {
         if(life <= 0) {
             getWorld().removeObject(this);
