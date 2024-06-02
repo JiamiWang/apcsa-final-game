@@ -10,7 +10,7 @@ import java.util.concurrent.locks.*; // threadding control
  */
 public class MusicOption extends OptionCounters
 {
-    public static final String DEFAULT_PREFIX = "[M] Music ";
+    public static final String DEFAULT_PREFIX = "(M) 🎵 ";
     public static final String DEFAULT_MUSIC_ON = "ON";
     public static final String DEFAULT_MUSIC_OFF = "OFF";
     private static final int DEBOUNCE_TIME = 100;

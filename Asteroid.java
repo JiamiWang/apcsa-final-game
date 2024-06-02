@@ -8,26 +8,31 @@ import greenfoot.*;
  */
 public class Asteroid extends SmoothMover
 {
+    public static final int DEFAULT_LARGE_SIZE = 50;
+    public static final int DEFAULT_NEXT_SIZE_FACTOR = 2;
+    
     /** Size of this asteroid */
     private int size;
 
     /** When the stability reaches 0 the asteroid will explode */
     private int stability;
 
+    
     /**
      * Create an asteroid with default size and random direction of movement.
      */
     public Asteroid()
     {
-        this(50);
+        this(DEFAULT_LARGE_SIZE);
     }
+    
     
     /**
      * Create an asteroid with a given size and random direction of movement.
      */
     public Asteroid(int size)
     {
-        super(new Vector(Greenfoot.getRandomNumber(360), 2));
+        super(new Vector(Greenfoot.getRandomNumber(360), 2), true);
         setSize(size);
     }
     
@@ -44,6 +49,7 @@ public class Asteroid extends SmoothMover
     {         
         move();
         checkRocketHit();
+        if (forDestroy()) getWorld().removeObject(this);
     }
     
     /**
@@ -111,8 +117,8 @@ public class Asteroid extends SmoothMover
             double l = getVelocity().getLength();
             Vector speed1 = new Vector(r + 60, l * 1.2);
             Vector speed2 = new Vector(r - 60, l * 1.2);        
-            Asteroid a1 = new Asteroid(size/2, speed1);
-            Asteroid a2 = new Asteroid(size/2, speed2);
+            Asteroid a1 = new Asteroid(size/DEFAULT_NEXT_SIZE_FACTOR, speed1);
+            Asteroid a2 = new Asteroid(size/DEFAULT_NEXT_SIZE_FACTOR, speed2);
             getWorld().addObject(a1, getX(), getY());
             getWorld().addObject(a2, getX(), getY());        
             a1.move();

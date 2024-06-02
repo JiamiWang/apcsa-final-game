@@ -10,7 +10,7 @@ import greenfoot.*;
  * 
  * @author Poul Henriksen
  * @author Michael Kölling
- * 
+ * d
  * @version 2.3
  */
 public abstract class SmoothMover extends Actor
@@ -19,6 +19,16 @@ public abstract class SmoothMover extends Actor
     
     private double exactX;
     private double exactY;
+    
+    private boolean isObstacle;
+    
+    // if someone wants this destroyed
+    private boolean destroy;
+    public void queueDestroyThis() { destroy = true; }
+    public boolean forDestroy() { return destroy; }
+    
+    private static final int LEFT_ROTATION_DEG = 180;
+    private static final int RIGHT_ROTATION_DEG = 0;
     
     public SmoothMover()
     {
@@ -33,26 +43,46 @@ public abstract class SmoothMover extends Actor
         this.velocity = velocity;
     }
     
+    public SmoothMover(Vector velocity, boolean isObstacle) {
+        this(velocity); this.isObstacle = isObstacle;
+    }
+    
     /**
      * Move in the direction of the velocity vector. This simulates movement in one 
      * time unit (dt==1). Wrap around to the opposite edge of the screen if moving out of the world.
      */
-    public void move() 
-    {
+    public final void move() 
+    {        
         exactX = exactX + velocity.getX();
         exactY = exactY + velocity.getY();
-        if (exactX >= getWorld().getWidth()) {
-            exactX = 0;
+        
+        if (isObstacle) {
+            if (exactY >= getWorld().getHeight()) {
+                exactY = 0;
+            }
+            if (exactY < 0) {
+                ((Space)getWorld()).addAsteroids(1);
+                destroy = true;
+                return;
+            }
+            if (exactX < 0 || exactX >= getWorld().getWidth()) {
+                exactX = getWorld().getWidth() / 2; exactY = 0;
+            }
+        } else {        
+            if (exactX >= getWorld().getWidth()) {
+                exactX = 0;
+            }
+            if (exactX < 0) {
+                exactX = getWorld().getWidth() - 1;
+            }
+            if (exactY >= getWorld().getHeight()) {
+                exactY = 0;
+            }
+            if (exactY < 0) {
+                exactY = getWorld().getHeight() - 1;
+            }
         }
-        if (exactX < 0) {
-            exactX = getWorld().getWidth() - 1;
-        }
-        if (exactY >= getWorld().getHeight()) {
-            exactY = 0;
-        }
-        if (exactY < 0) {
-            exactY = getWorld().getHeight() - 1;
-        }
+                
         super.setLocation((int) exactX, (int) exactY);
     }
     

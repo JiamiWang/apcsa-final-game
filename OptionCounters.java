@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class OptionCounters extends Actor
+public class OptionCounters extends Labels
 {
     private static final Color transparent = new Color(0,0,0,0);
     private String prefix;
@@ -15,6 +15,7 @@ public class OptionCounters extends Actor
     public OptionCounters() { this(new String()); }
     public OptionCounters(String prefix) { 
         background = getImage();
+        
         this.prefix = prefix;
         updateImage();
     }

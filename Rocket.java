@@ -24,6 +24,7 @@ public class Rocket extends SmoothMover
     public Rocket()
     {
         reloadDelayCount = 5;
+        setRotation(270);
     }
 
     /**
@@ -39,35 +40,37 @@ public class Rocket extends SmoothMover
     
     /**
      * Check whether there are any key pressed and react to them.
+     * @return true if moving left or right, false if up and down
      */
     private void checkKeys() 
     {
+        boolean isMoving = false;
+        boolean leftRight = false;
         if (Greenfoot.isKeyDown("space")) 
         {
             fire();
         }
         if (Greenfoot.isKeyDown("w")) {
-            ignite();
-            beingHeld = true;
+            up(); isMoving = true;
         }
-        else { beingHeld = false; }
         if (Greenfoot.isKeyDown("s")) {
-            doBreak();
+            down(); isMoving = true;
         }
+        
         if (Greenfoot.isKeyDown("a")) {
-            turn(-3);
+            left(); isMoving = true;
         }
+        
         if (Greenfoot.isKeyDown("d")) {
-            turn(3);
+            right(); isMoving = true;
         }
         
         if (System.currentTimeMillis() - prevTime > 100) {
             prevTime = System.currentTimeMillis();
-            if (beingHeld) {
+            if (isMoving) {
                 getImage().clear();
                 getImage().drawImage(new GreenfootImage("rocketWithThrust.png"), 0, 0);
             } else {
-                
                 getImage().clear();
                 getImage().drawImage(new GreenfootImage("rocket.png"), 0, 0);
             }
@@ -75,24 +78,55 @@ public class Rocket extends SmoothMover
             if (getWorld().getObjects(Asteroid.class).size() == 0 &&
                 getWorld().getObjects(ScoreBoard.class).size() == 0)
                 ((Space) getWorld()).gameOver();
-        }
+        }        
     }
     
     /**
-     * Helper method assist with moving (accelerate)
+     * Helper method assist with moving (up or right)
      */
-    private void ignite() {
+    private void up() {
         Vector v = new Vector(getRotation(), 0.1);
         addToVelocity(v);
     }
     
     /**
-     * Helper method assist with moving (accelerate)
+     * Helper method assist with moving (down or left)
      */
-    private void doBreak() {
+    private void down() {
         Vector v = new Vector(getRotation(), -0.1);
         addToVelocity(v);
     }
+
+    /**
+     * Helper method assist with moving (up or right)
+     */
+    private void left() {
+        int x = getX() - 4;
+        
+        if (x >= getWorld().getWidth()) {
+            x = 0;
+        }
+        if (x < 0) {
+            x = getWorld().getWidth() - 1;
+        }
+        
+        this.setLocation(x, getY());
+    }
+    
+    /**
+     * Helper method assist with moving (down or left)
+     */
+    private void right() {
+        int x = getX() + 4;
+        
+        if (x >= getWorld().getWidth()) {
+            x = 0;
+        }
+        if (x < 0) {
+            x = getWorld().getWidth() - 1;
+        }
+        
+        this.setLocation(x, getY());    }
     
     /** 
      * Fire a bullet if the gun is ready.

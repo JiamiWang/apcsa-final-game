@@ -12,6 +12,7 @@ import greenfoot.*;
 public class ScoreBoard extends Actor
 {
     public static final float FONT_SIZE = 48.0f;
+    public static final float REG_TEXT_FONT_SIZE = 12.0f;
     public static final int WIDTH = 400;
     public static final int HEIGHT = 300;
     
@@ -30,6 +31,10 @@ public class ScoreBoard extends Actor
     {
         makeImage("Game Over", "Score: ", score);
     }
+    
+    public ScoreBoard(String title, String paragraph) {
+        makeImage(title, paragraph, -1);
+    }
 
     /**
      * Make the score board image.
@@ -44,10 +49,19 @@ public class ScoreBoard extends Actor
         image.fillRect(5, 5, WIDTH-10, HEIGHT-10);
         Font font = image.getFont();
         font = font.deriveFont(FONT_SIZE);
-        image.setFont(font);
         image.setColor(Color.WHITE);
         image.drawString(title, 60, 100);
-        image.drawString(prefix + score, 60, 200);
+        
+        if (score == -1) {
+            font.deriveFont(REG_TEXT_FONT_SIZE);
+            image.setFont(font);
+            image.drawString (prefix, 60, 100);
+        }
+        else {
+            font.deriveFont(FONT_SIZE);
+            image.setFont(font);
+            image.drawString(prefix + score, 60, 200);
+        }
         setImage(image);
     }
 }
