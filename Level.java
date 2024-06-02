@@ -38,12 +38,11 @@ public class Level {
        * @return null if lvl is greater than 
     */
     public static Level getLevel(int lvl) {
-        
         return null;
     }
     
     public String toString() {
-        return "Level " + lvl + " ()";
+        return "Level " + lvl;
     }
 
 }
