@@ -9,18 +9,11 @@ import java.util.*;
 public class Level {
     private int lvl;
     private ArrayList<Asteroid> asts;
-    DIFFICULTY diff;
     
     private int smalls, mediums, larges;
     
-    public enum DIFFICULTY {
-        EASY, MEDIUM,
-        HARD, INSANE,
-    }
-    
     public int getLevel() { return lvl; }
     public ArrayList<Asteroid> getAsteroids() { return asts; }
-    public DIFFICULTY getDifficulty() { return diff; }
     
     /**
      * Instantiate a new level
@@ -45,6 +38,7 @@ public class Level {
        * @return null if lvl is greater than 
     */
     public static Level getLevel(int lvl) {
+        
         return null;
     }
     
