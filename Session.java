@@ -69,5 +69,14 @@ public class Session {
             s.getWidth() / 2,
             s.getHeight() / 2
         );
+        setGameStat(StatusOptions.GAMEOVER);
+    }
+    
+    public void restartGame() {
+        curDeaths = 0;
+        s.setScore(0);
+        setDeaths(curDeaths);
+        cleanUpAndCreateGame();
+        setGameStat(StatusOptions.ACTIVE);
     }
 }

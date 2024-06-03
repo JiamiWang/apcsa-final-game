@@ -7,7 +7,7 @@ public class Pause extends Labels
     private GreenfootImage deadState;
     private GreenfootImage activeState;
     
-    private static final float FONT_SIZE = 20.0f;
+    private static final float FONT_SIZE = 14.0f;
     private static final float FONT_SIZE_NORMAL = 10.0f;
     private static final int DEBOUNCE_TIME = 100;
     private long prevMillis;
@@ -37,10 +37,15 @@ public class Pause extends Labels
             Session sess = ((Space)getWorld()).getSession();
             if (sess.getGameStat() == StatusOptions.PAUSED) {
                 sess.setGameStat(StatusOptions.ACTIVE);
-                setImage(pausedState);
+                setImage(activeState);
             }
             else if (sess.getGameStat() == StatusOptions.ACTIVE) {
                 sess.setGameStat(StatusOptions.PAUSED);
+                setImage(pausedState);
+            } 
+            else if (sess.getGameStat() == StatusOptions.GAMEOVER) {
+                sess.restartGame();
+                sess.setGameStat(StatusOptions.ACTIVE);
                 setImage(activeState);
             }
         }
@@ -52,13 +57,19 @@ public class Pause extends Labels
     
     public void validateOptionPanel() {
         boolean panelPresent = getWorld().getObjects(OptionsPanel.class).size() != 0;
-        if (((Space)getWorld()).getSession().getGameStat() == StatusOptions.PAUSED && !panelPresent)
-            getWorld().addObject(
-                new OptionsPanel(),
-                getWorld().getWidth() / 2,
-                getWorld().getHeight() / 2
-            );
+        if (((Space)getWorld()).getSession().getGameStat() == StatusOptions.PAUSED) {
+            if (!panelPresent)
+                getWorld().addObject(
+                    new OptionsPanel(((Space)getWorld()).getSession()),
+                    getWorld().getWidth() / 2,
+                    getWorld().getHeight() / 2
+                );
+            }
         else getWorld().removeObjects(getWorld().getObjects(OptionsPanel.class));
+        
+        if (((Space)getWorld()).getSession().getGameStat() == StatusOptions.ACTIVE &&
+        getWorld().getObjects(ScoreBoard.class).size() != 0) 
+            getWorld().removeObjects(getWorld().getObjects(ScoreBoard.class));
     }
     
     // other images lol
@@ -66,16 +77,15 @@ public class Pause extends Labels
         GreenfootImage image = new GreenfootImage(pausedState.getWidth(), pausedState.getHeight());
         image.setColor(new Color(255,255,255, 128));
         image.fillRect(0, 0, pausedState.getWidth(), pausedState.getHeight());
-        image.setColor(new Color(0, 0, 0, 128));
-        image.fillRect(5, 5, pausedState.getWidth()-5, pausedState.getHeight()-5);
         Font font = image.getFont();
         font = font.deriveFont(FONT_SIZE);
         image.setFont(font);
-        image.drawString("(P)", 4, 2);
+        image.setColor(Color.WHITE);
+        image.drawString("(P)", 4, 12);
         Font font_reg = image.getFont();
         font_reg = font_reg.deriveFont(FONT_SIZE_NORMAL);
         image.setFont(font_reg);
-        image.drawString("Pause & Options", 4, 25);
+        image.drawString("Pause", 4, 22);
         return image;
     }
 }

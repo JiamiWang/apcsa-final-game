@@ -9,21 +9,31 @@ import java.util.concurrent.locks.*;
  */
 public class Space extends World
 {
-    private Counter scoreCounter, levelCounter, livesCounter;
+    private Counter scoreCounter, bestCounter, livesCounter;
     private Pause pause;
     private OptionCounters musicOption;
     private Session sess;
         
     /* Interaction with the Score Counter */
     public void addScore(int score) {
-        scoreCounter.add(score);
+        updateUserInfoScore(scoreCounter.add(score));
     }
     
     public void setScore(int score) {
         scoreCounter.setValue(score);
+        updateUserInfoScore(score);
     }
     
     public int getScore() { return scoreCounter.getValue(); }
+    
+    private void updateUserInfoScore(int score) {
+        if (!UserInfo.isStorageAvailable()) { 
+            bestCounter.setValue(-1);
+            return; 
+        }
+        UserInfo.getMyInfo().setScore(score);
+        if (UserInfo.getMyInfo().getScore() > score) bestCounter.setValue(score);
+    }
     
     /* Interaction with the lives counter */
     public void setLivesCounter(int newVal) { livesCounter.setValue(newVal); }
@@ -51,8 +61,8 @@ public class Space extends World
         musicOption = new MusicOption(new GreenfootSound("soundtrack.mp3"));
         addObject(musicOption, 70, 110);
         
-        levelCounter = new Counter("✨ ");//
-        addObject(levelCounter, 60, 50);
+        bestCounter = new Counter("✨ ");//
+        addObject(bestCounter, 60, 50);
         
         scoreCounter = new Counter("🎯 ");//⭐
         addObject(scoreCounter, 60, 20);

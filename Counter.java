@@ -55,9 +55,10 @@ public class Counter extends Labels
      * Add a new score to the current counter value.  This will animate
      * the counter over consecutive frames until it reaches the new value.
      */
-    public void add(int score)
+    public int add(int score)
     {
         target += score;
+        return target;
     }
 
     /**

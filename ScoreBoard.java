@@ -56,7 +56,7 @@ public class ScoreBoard extends Actor
         Font font_reg = image.getFont();
         font_reg = font_reg.deriveFont(REG_TEXT_FONT_SIZE);
         image.setFont(font_reg);
-        image.drawString("Press 'ESC' to restart with a new session.", 60, 250);
+        image.drawString("Press 'P' to restart with a new session.", 60, 250);
         setImage(image);
     }
 }
