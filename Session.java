@@ -14,6 +14,8 @@ public class Session {
     private StatusOptions gameStat = StatusOptions.PAUSED; // true if running, false if paused 
     private Level curLevel;
     
+    private int scoreBeforeTally;
+    
     private Space s;
     
     public Session(Space wrld) {
@@ -66,6 +68,7 @@ public class Session {
     
     public void nextLevel() {
         cleanUpGame();
+        scoreBeforeTally = s.getScore();
         if (curLevel.getLevel() + 1 <= Level.LAST_LEVEL) {
             curLevel = Level.getLevel(curLevel.getLevel() + 1);
             s.setLevelCounter(curLevel.getLevel());
@@ -125,7 +128,7 @@ public class Session {
     }
     
     public void updateUserInfoScore(int score) {
-        curLevel.setScore(score);
+        curLevel.setScore(score - scoreBeforeTally);
         if (!UserInfo.isStorageAvailable()) { 
             if (guestHighestScore > score) {
                 guestHighestScore = score;
