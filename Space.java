@@ -9,31 +9,28 @@ import java.util.concurrent.locks.*;
  */
 public class Space extends World
 {
-    private Counter scoreCounter, bestCounter, livesCounter;
+    private Counter scoreCounter, levelCounter, livesCounter;
     private Pause pause;
     private OptionCounters musicOption;
     private Session sess;
-        
+    
+    GreenfootImage background;
+    
     /* Interaction with the Score Counter */
     public void addScore(int score) {
-        updateUserInfoScore(scoreCounter.add(score));
+        sess.updateUserInfoScore(scoreCounter.add(score));
     }
     
     public void setScore(int score) {
         scoreCounter.setValue(score);
-        updateUserInfoScore(score);
+        sess.updateUserInfoScore(score);
     }
     
     public int getScore() { return scoreCounter.getValue(); }
+
+    public void setLevelCounter(int newVal) { levelCounter.setValue(newVal); }
     
-    private void updateUserInfoScore(int score) {
-        if (!UserInfo.isStorageAvailable()) { 
-            bestCounter.setValue(-1);
-            return; 
-        }
-        UserInfo.getMyInfo().setScore(score);
-        if (UserInfo.getMyInfo().getScore() > score) bestCounter.setValue(score);
-    }
+    public GreenfootImage getDefaultImage() { return background; }
     
     /* Interaction with the lives counter */
     public void setLivesCounter(int newVal) { livesCounter.setValue(newVal); }
@@ -53,16 +50,18 @@ public class Space extends World
         sess = new Session(this); 
         // above will handle all user and game related stuff
         
-        GreenfootImage background = getBackground();
+        background = new GreenfootImage(getBackground());
         background.setColor(Color.BLACK);
         background.fill();
         drawStars(background, 2282, 1, 3);
+        getBackground().drawImage(background, 0, 0);
         
-        musicOption = new MusicOption(new GreenfootSound("soundtrack.mp3"));
+        musicOption = new MusicOption(new GreenfootSound("soundtrack.mp3"), sess);
         addObject(musicOption, 70, 110);
         
-        bestCounter = new Counter("✨ ");//
-        addObject(bestCounter, 60, 50);
+        levelCounter = new Counter("✨ ");//
+        addObject(levelCounter, 60, 50);
+        levelCounter.setValue(Level.FIRST_LEVEL);
         
         scoreCounter = new Counter("🎯 ");//⭐
         addObject(scoreCounter, 60, 20);

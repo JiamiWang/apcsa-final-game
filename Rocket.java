@@ -75,10 +75,9 @@ public class Rocket extends SmoothMover
                 getImage().drawImage(new GreenfootImage("rocket.png"), 0, 0);
             }
             
-            if (getWorld().getObjects(Asteroid.class).size() == 0 &&
-                getWorld().getObjects(ScoreBoard.class).size() == 0)
+            if (getWorld().getObjects(Asteroid.class).size() == 0)
                 {
-                    ((Space)getWorld()).getSession().gameOver();
+                    ((Space)getWorld()).getSession().nextLevel();
                 }
         }
     }

@@ -56,30 +56,33 @@ public abstract class SmoothMover extends ActiveActor
         exactX = exactX + velocity.getX();
         exactY = exactY + velocity.getY();
         
+        World wrld = getWorld();
+        if (wrld == null) return;
+        
         if (isObstacle) {
-            if (exactY >= getWorld().getHeight()) {
+            if (exactY >= wrld.getHeight()) {
                 exactY = 0;
             }
             if (exactY < 0) {
                 queueDestroyThis();
                 return;
             }
-            if (exactX < 0 || exactX >= getWorld().getWidth()) {
+            if (exactX < 0 || exactX >= wrld.getWidth()) {
                 exactX = (int) (Math.random() * (getWorld().getWidth()/1.5)) + 20;
                 exactY = 0;
             }
         } else {        
-            if (exactX >= getWorld().getWidth()) {
+            if (exactX >= wrld.getWidth()) {
                 exactX = 0;
             }
             if (exactX < 0) {
-                exactX = getWorld().getWidth() - 1;
+                exactX = wrld.getWidth() - 1;
             }
-            if (exactY >= getWorld().getHeight()) {
+            if (exactY >= wrld.getHeight()) {
                 exactY = 0;
             }
             if (exactY < 0) {
-                exactY = getWorld().getHeight() - 1;
+                exactY = wrld.getHeight() - 1;
             }
         }
                 

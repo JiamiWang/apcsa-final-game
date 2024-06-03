@@ -9,7 +9,7 @@ public class OptionsPanel extends Labels
     Session sess;
     
     private enum OptionsPage {
-        SCORE_LEADERBOARD
+        DEFAUTLT, NEWLVL
     }
     
     public OptionsPanel(Session sess) {
@@ -52,11 +52,24 @@ public class OptionsPanel extends Labels
         image.drawString("2) " + getLeaderboardFormat(1), 10, 66);
         image.drawString("3) " + getLeaderboardFormat(2), 10, 76);
         image.setColor(Color.GREEN);
-        image.drawString("My opps (those to take care of)", 10, 96);
+        image.drawString("My Stats", 10, 96);
         image.setColor(Color.WHITE);
-        image.drawString("/\\ " + "a", 10, 106);
-        image.drawString("-> " , 10, 116);
-        image.drawString("\\/ ", 10, 126);
+        image.drawString("Highest Score: " + sess.getHighestScore(), 10, 106);
+        
+        image.setColor(Color.RED);
+        image.drawString("Notices", 10, 136);
+        image.setColor(Color.WHITE);
+        image.drawString("Your current level is shown by the shiny star", 10, 146);
+        image.drawString("Your current score is shown by the bow target logo", 10, 156);
+        image.drawString("Your current lives is shown by the heart", 10, 166);
+        image.drawString("Press M to toggle music on or off. If logged in, the preference will be saved.", 10, 176);
+        
+        image.setColor(Color.RED);
+        image.drawString("Licensing", 10, 206);
+        image.setColor(Color.WHITE);
+        image.drawString("This game is created by JiamiWang and 1Willie1. Additional software or imagery", 10, 216);
+        image.drawString(" used are enlisted in LICENSE.TXT, specifically attributing to Mr. Koiling. See the", 10, 226);
+        image.drawString(" README.md for more information.", 10, 236);
         setImage(image);
     }
     

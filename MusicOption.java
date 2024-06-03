@@ -18,18 +18,22 @@ public class MusicOption extends OptionCounters
     private Lock lock;
     private long prevMillis; private boolean userState = false;
     private GreenfootSound track;
+    private Session sess;
     
     private void InstantiationHelper() {
         lock = new ReentrantLock();
+        userState = sess.musicStat();
     }
     
-    public MusicOption() {
+    public MusicOption(Session sess) {
         super(DEFAULT_PREFIX + DEFAULT_MUSIC_OFF);
+        this.sess = sess;
         InstantiationHelper();
     }
     
-    public MusicOption(GreenfootSound track) { 
+    public MusicOption(GreenfootSound track, Session sess) { 
         super(DEFAULT_PREFIX + DEFAULT_MUSIC_OFF);
+        this.sess = sess;
         InstantiationHelper();
         this.track = track;
     }
@@ -64,6 +68,7 @@ public class MusicOption extends OptionCounters
             }
             
             userState = !userState;
+            sess.setMusicStat(userState);
         }
         lock.unlock();
     }
