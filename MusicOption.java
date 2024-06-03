@@ -13,7 +13,7 @@ public class MusicOption extends OptionCounters
     public static final String DEFAULT_PREFIX = "(M) 🎵 ";
     public static final String DEFAULT_MUSIC_ON = "ON";
     public static final String DEFAULT_MUSIC_OFF = "OFF";
-    private static final int DEBOUNCE_TIME = 100;
+    private static final int DEBOUNCE_TIME = 300;
     
     private Lock lock;
     private long prevMillis; private boolean userState = false;
