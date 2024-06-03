@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 This scenario is part of the book 
 
     "Introduction to Programming with Greenfoot"
-    (Second edition)
+    (Second edition)        
     by Michael Kölling
     ISBN: 0134054296
 
@@ -28,6 +28,9 @@ This scenario is part of Chapter 9.
 
 Copyright (c) Michael Kölling.
 
-(LICENSE 2)
+(IMAGE LICENSES)
+https://stock.adobe.com/images/mars-surface-alien-planet-landscape-night-space-game-background-with-ground-mountains-stars-saturn-and-earth-in-sky-2r-illustrated-cartoon-fantastic-illustration-of-cosmos-and-dark-martian/546343293?asset_id=546341850
 
+(IMAGE LICENSES)
+https://animalia-life.club/qa/pictures/moon-cartoon-clipart
 
