@@ -9,7 +9,7 @@ public class Pause extends Labels
     
     private static final float FONT_SIZE = 14.0f;
     private static final float FONT_SIZE_NORMAL = 10.0f;
-    private static final int DEBOUNCE_TIME = 300;
+    private static final int DEBOUNCE_TIME = 150;
     private long prevMillis;
     
     private Lock lock;
