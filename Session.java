@@ -109,6 +109,7 @@ public class Session {
     public void restartGame() {
         curDeaths = 0;
         s.setScore(0);
+        scoreBeforeTally = 0;
         curLevel = null;
         setDeaths(curDeaths);
         cleanUpAndCreateGame();
